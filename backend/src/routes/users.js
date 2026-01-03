@@ -69,6 +69,7 @@ router.patch('/:id', async (req, res) => {
         if (mobile_number) updates.mobile_number = mobile_number;
         if (department) updates.department = department;
         if (year) updates.year = parseInt(year);
+        if (req.body.is_present !== undefined) updates.is_present = req.body.is_present;
 
         const { data, error } = await supabase
             .from('users')
