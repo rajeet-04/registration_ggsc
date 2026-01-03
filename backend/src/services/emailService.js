@@ -10,14 +10,27 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Create email transporter
-// Create email transporter
-// Using 'service: gmail' automatically handles host, port (465), and secure settings
+// defaulting to secure (465) but allowing overrides via env vars
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.EMAIL_PORT || '465'),
+    secure: process.env.EMAIL_SECURE === 'true',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
     },
+    tls: {
+        rejectUnauthorized: false
+    },
+    family: 4 // Force IPv4
+});
+
+console.log('📧 Email Config:', {
+    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: process.env.EMAIL_PORT || '465',
+    secure: process.env.EMAIL_SECURE === 'true',
+    user: process.env.EMAIL_USER ? '(set)' : '(missing)',
+    ipv4_forced: true
 });
 
 // Verify transporter configuration
