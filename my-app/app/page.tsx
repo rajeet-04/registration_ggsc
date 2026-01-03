@@ -27,6 +27,7 @@ export default function Page() {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -53,12 +54,10 @@ export default function Page() {
         year: yearMap[form.year],
       };
 
-      const response = await axios.post(`${BACKEND_URL}/api/auth/signup`, payload);
+      await axios.post(`${BACKEND_URL}/api/auth/signup`, payload);
 
-      setMessage({
-        type: "success",
-        text: "Registration successful! You can now login."
-      });
+      // Show success screen
+      setIsSuccess(true);
 
       // Reset form
       setForm({
@@ -71,11 +70,9 @@ export default function Page() {
         year: "",
       });
 
-      console.log("Registration response:", response.data);
     } catch (error: any) {
       let errorMessage = "Registration failed. Please try again.";
 
-      // Handle backend errors
       // Handle backend errors
       if (error.response?.data?.error) {
         const backendError = error.response.data.error;
@@ -116,139 +113,180 @@ export default function Page() {
         className="md:hidden absolute inset-0 w-full h-full object-cover -z-10"
       />
 
-      {/* 🧊 Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="w-[90%] max-w-md backdrop-blur-lg
-                   bg-white/10 border border-white/20
-                   rounded-2xl p-8 shadow-2xl"
-      >
-        {/* 🔰 Logos */}
-        <div className="flex flex-col items-center gap-2 mb-2">
-          <a
-            href="https://ggscuemk.tech"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="/icon1.png"
-              alt="GGS CUE MK"
-              className="w-[20.5rem] md:w-80 h-auto object-contain
-                         drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]
-                         hover:scale-105 transition-transform duration-300 cursor-pointer"
-            />
-          </a>
+      {isSuccess ? (
+        /* ✅ Success Screen */
+        <div className="w-[90%] max-w-md backdrop-blur-lg
+                       bg-white/10 border border-white/20
+                       rounded-2xl p-8 shadow-2xl text-center animate-fade-in">
 
-          <img
-            src="/mainicon2.png"
-            alt="Main Logo"
-            className="w-[22rem] md:w-[24rem] h-auto object-contain
-                       drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
-          />
-        </div>
+          <div className="flex flex-col items-center gap-4 mb-6">
+            <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center border border-green-500/50 mb-2">
+              <span className="text-4xl">🎉</span>
+            </div>
 
-        {/* 📝 Heading */}
-        <h1
-          className={`${playfair.className} text-3xl font-semibold text-center mb-6 text-amber-950`}
-        >
-          Registration
-        </h1>
+            <h1 className={`${playfair.className} text-3xl font-bold text-amber-950`}>
+              Registration Successful!
+            </h1>
 
-        {/* 💬 Message Display */}
-        {message.text && (
-          <div
-            className={`mb-4 p-3 rounded-lg text-center ${message.type === "success"
-              ? "bg-green-500/20 border border-green-500/50 text-green-900"
-              : "bg-red-500/20 border border-red-500/50 text-red-900"
-              }`}
-          >
-            {message.text}
+            <p className="text-gray-800 font-medium text-lg">
+              Welcome to the Chamber of Secrets 🗝️
+            </p>
           </div>
-        )}
 
-        {/* 📋 Inputs */}
-        <div className="space-y-4">
-          <input
-            className="glass-input"
-            name="full_name"
-            placeholder="Full Name"
-            value={form.full_name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            className="glass-input"
-            name="email"
-            type="email"
-            placeholder="Email ID"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            className="glass-input"
-            name="password"
-            type="password"
-            placeholder="Password (min 6 characters)"
-            value={form.password}
-            onChange={handleChange}
-            minLength={6}
-            required
-          />
-          <input
-            className="glass-input"
-            name="enrollment_number"
-            placeholder="Enrollment Number"
-            value={form.enrollment_number}
-            onChange={handleChange}
-            required
-          />
-          <input
-            className="glass-input"
-            name="mobile_number"
-            placeholder="Phone Number"
-            value={form.mobile_number}
-            onChange={handleChange}
-            required
-          />
-          <input
-            className="glass-input"
-            name="department"
-            placeholder="Department"
-            value={form.department}
-            onChange={handleChange}
-            required
-          />
+          <div className="bg-white/30 rounded-xl p-6 border border-white/40 mb-6">
+            <h3 className="font-semibold text-amber-900 mb-2">📧 Please Check Your Email needed</h3>
+            <p className="text-sm text-gray-700 leading-relaxed">
+              We've sent a confirmation scroll to <strong>{form.email}</strong>.
+              <br />
+              Check your inbox (and spam folder) for further instructions on the Treasure Hunt.
+            </p>
+          </div>
 
-          <select
-            name="year"
-            value={form.year}
-            onChange={handleChange}
-            required
-            className="glass-input"
+          <button
+            onClick={() => window.location.reload()}
+            className={`${playfair.className} w-full py-3 rounded-xl
+                       bg-amber-950 text-white text-lg
+                       hover:bg-black transition shadow-lg`}
           >
-            <option value="">Select College Year</option>
-            <option>1st Year</option>
-            <option>2nd Year</option>
-            <option>3rd Year</option>
-            <option>4th Year</option>
-          </select>
+            Back to Home
+          </button>
         </div>
-
-        {/* 🚀 Submit */}
-        <button
-          type="submit"
-          disabled={loading}
-          className={`${playfair.className} mt-6 w-full py-3 rounded-xl
-                     bg-amber-950 text-white text-xl
-                     hover:bg-black transition
-                     disabled:opacity-50 disabled:cursor-not-allowed`}
+      ) : (
+        /* 🧊 Form */
+        <form
+          onSubmit={handleSubmit}
+          className="w-[90%] max-w-md backdrop-blur-lg
+                     bg-white/10 border border-white/20
+                     rounded-2xl p-8 shadow-2xl"
         >
-          {loading ? "Submitting..." : "Submit"}
-        </button>
-      </form>
+          {/* 🔰 Logos */}
+          <div className="flex flex-col items-center gap-2 mb-2">
+            <a
+              href="https://ggscuemk.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/icon1.png"
+                alt="GGS CUE MK"
+                className="w-[20.5rem] md:w-80 h-auto object-contain
+                           drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]
+                           hover:scale-105 transition-transform duration-300 cursor-pointer"
+              />
+            </a>
+
+            <img
+              src="/mainicon2.png"
+              alt="Main Logo"
+              className="w-[22rem] md:w-[24rem] h-auto object-contain
+                         drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
+            />
+          </div>
+
+          {/* 📝 Heading */}
+          <h1
+            className={`${playfair.className} text-3xl font-semibold text-center mb-6 text-amber-950`}
+          >
+            Registration
+          </h1>
+
+          {/* 💬 Message Display */}
+          {message.text && (
+            <div
+              className={`mb-4 p-3 rounded-lg text-center ${message.type === "success"
+                ? "bg-green-500/20 border border-green-500/50 text-green-900"
+                : "bg-red-500/20 border border-red-500/50 text-red-900"
+                }`}
+            >
+              {message.text}
+            </div>
+          )}
+
+          {/* 📋 Inputs */}
+          <div className="space-y-4">
+            <input
+              className="glass-input"
+              name="full_name"
+              placeholder="Full Name"
+              value={form.full_name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className="glass-input"
+              name="email"
+              type="email"
+              placeholder="Email ID"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className="glass-input"
+              name="password"
+              type="password"
+              placeholder="Password (min 6 characters)"
+              value={form.password}
+              onChange={handleChange}
+              minLength={6}
+              required
+            />
+            <input
+              className="glass-input"
+              name="enrollment_number"
+              placeholder="Enrollment Number"
+              value={form.enrollment_number}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className="glass-input"
+              name="mobile_number"
+              placeholder="Phone Number"
+              value={form.mobile_number}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className="glass-input"
+              name="department"
+              placeholder="Department"
+              value={form.department}
+              onChange={handleChange}
+              required
+            />
+
+            <select
+              name="year"
+              value={form.year}
+              onChange={handleChange}
+              required
+              className="glass-input"
+            >
+              <option value="">Select College Year</option>
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+            </select>
+          </div>
+
+          {/* 🚀 Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`${playfair.className} mt-6 w-full py-3 rounded-xl
+                       bg-amber-950 text-white text-xl
+                       hover:bg-black transition
+                       disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+        </form>
+      )}
 
       {/* 🎨 Glass styles */}
+
       <style>{`
         .glass-input {
           width: 100%;
