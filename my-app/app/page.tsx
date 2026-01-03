@@ -12,6 +12,7 @@ const playfair = Playfair_Display({
 
 // 🔗 BACKEND URL
 const BACKEND_URL = "https://registration-ggsc.onrender.com";
+// const BACKEND_URL = "http://localhost:3000";  // For local development  
 
 export default function Page() {
   const [form, setForm] = useState({
@@ -75,16 +76,19 @@ export default function Page() {
       let errorMessage = "Registration failed. Please try again.";
 
       // Handle backend errors
+      // Handle backend errors
       if (error.response?.data?.error) {
         const backendError = error.response.data.error;
-        if (backendError.includes("users_pkey") || backendError.includes("already registered")) {
+        const errorString = typeof backendError === 'string' ? backendError : JSON.stringify(backendError);
+
+        if (errorString.includes("users_pkey") || errorString.includes("already registered")) {
           errorMessage = "User already registered! Please login instead.";
-        } else if (backendError.includes("email")) {
+        } else if (errorString.includes("email")) {
           errorMessage = "Email already in use!";
-        } else if (backendError.includes("enrollment_number")) {
+        } else if (errorString.includes("enrollment_number")) {
           errorMessage = "Enrollment number already registered!";
         } else {
-          errorMessage = backendError;
+          errorMessage = errorString;
         }
       }
 
