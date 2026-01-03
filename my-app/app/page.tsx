@@ -11,7 +11,7 @@ const playfair = Playfair_Display({
 });
 
 // 🔗 BACKEND URL
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = "https://registration-ggsc.onrender.com";
 
 export default function Page() {
   const [form, setForm] = useState({
@@ -72,7 +72,22 @@ export default function Page() {
 
       console.log("Registration response:", response.data);
     } catch (error: any) {
-      const errorMessage = error.response?.data?.error || "Registration failed. Please try again.";
+      let errorMessage = "Registration failed. Please try again.";
+
+      // Handle backend errors
+      if (error.response?.data?.error) {
+        const backendError = error.response.data.error;
+        if (backendError.includes("users_pkey") || backendError.includes("already registered")) {
+          errorMessage = "User already registered! Please login instead.";
+        } else if (backendError.includes("email")) {
+          errorMessage = "Email already in use!";
+        } else if (backendError.includes("enrollment_number")) {
+          errorMessage = "Enrollment number already registered!";
+        } else {
+          errorMessage = backendError;
+        }
+      }
+
       setMessage({ type: "error", text: errorMessage });
       console.error("Registration error:", error);
     } finally {
@@ -139,8 +154,8 @@ export default function Page() {
         {message.text && (
           <div
             className={`mb-4 p-3 rounded-lg text-center ${message.type === "success"
-                ? "bg-green-500/20 border border-green-500/50 text-green-900"
-                : "bg-red-500/20 border border-red-500/50 text-red-900"
+              ? "bg-green-500/20 border border-green-500/50 text-green-900"
+              : "bg-red-500/20 border border-red-500/50 text-red-900"
               }`}
           >
             {message.text}
