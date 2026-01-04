@@ -185,6 +185,10 @@ export default function Page() {
               className="glass-input"
               name="mobile_number"
               placeholder="Phone Number"
+              minLength={10}
+              maxLength={10}
+              required
+              onChange={handleChange}
             />
             <input
               className="glass-input"
@@ -221,7 +225,7 @@ export default function Page() {
                 <strong>🎮 Theme:</strong> Temple Run
               </p>
               <p>
-                <strong>🧩 Activities:</strong> Treasure hunt, games, quizzes, VR
+                <strong>🧩 Activities:</strong> Treasure hunt, games, quizzes, VR Games.
               </p>
               <p>
                 <strong>🏆 Prizes:</strong> Cash prizes for winners
@@ -244,6 +248,7 @@ export default function Page() {
                 <a href="tel:8016681646" className="underline">
                   8016681646
                 </a>
+                {" "}(Whatsapp)
               </p>
             </div>
           </details>
