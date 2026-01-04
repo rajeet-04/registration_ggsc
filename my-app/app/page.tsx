@@ -258,6 +258,8 @@ export default function Page() {
               name="mobile_number"
               type="tel"
               pattern="[0-9]{10}"
+              minLength={10}
+              maxLength={10}             
               inputMode="numeric"
               placeholder="Phone Number"
             />
