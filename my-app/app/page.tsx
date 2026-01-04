@@ -12,7 +12,7 @@ const playfair = Playfair_Display({
 
 // 🔗 BACKEND URL
 const BACKEND_URL = "https://registration-ggsc.onrender.com";
-// const BACKEND_URL = "http://localhost:3000";  // For local development  
+// const BACKEND_URL = "http://localhost:3000";  // For local development
 
 export default function Page() {
   const [form, setForm] = useState({
@@ -69,16 +69,21 @@ export default function Page() {
         department: "",
         year: "",
       });
-
     } catch (error: any) {
       let errorMessage = "Registration failed. Please try again.";
 
       // Handle backend errors
       if (error.response?.data?.error) {
         const backendError = error.response.data.error;
-        const errorString = typeof backendError === 'string' ? backendError : JSON.stringify(backendError);
+        const errorString =
+          typeof backendError === "string"
+            ? backendError
+            : JSON.stringify(backendError);
 
-        if (errorString.includes("users_pkey") || errorString.includes("already registered")) {
+        if (
+          errorString.includes("users_pkey") ||
+          errorString.includes("already registered")
+        ) {
           errorMessage = "User already registered! Please login instead.";
         } else if (errorString.includes("email")) {
           errorMessage = "Email already in use!";
@@ -115,16 +120,19 @@ export default function Page() {
 
       {isSuccess ? (
         /* ✅ Success Screen */
-        <div className="w-[90%] max-w-md backdrop-blur-lg
+        <div
+          className="w-[90%] max-w-md backdrop-blur-lg
                        bg-white/10 border border-white/20
-                       rounded-2xl p-8 shadow-2xl text-center animate-fade-in">
-
+                       rounded-2xl p-8 shadow-2xl text-center animate-fade-in"
+        >
           <div className="flex flex-col items-center gap-4 mb-6">
             <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center border border-green-500/50 mb-2">
               <span className="text-4xl">🎉</span>
             </div>
 
-            <h1 className={`${playfair.className} text-3xl font-bold text-amber-950`}>
+            <h1
+              className={`${playfair.className} text-3xl font-bold text-amber-950`}
+            >
               Registration Successful!
             </h1>
 
@@ -134,11 +142,14 @@ export default function Page() {
           </div>
 
           <div className="bg-white/30 rounded-xl p-6 border border-white/40 mb-6">
-            <h3 className="font-semibold text-amber-900 mb-2">📧 Please Check Your Email needed</h3>
+            <h3 className="font-semibold text-amber-900 mb-2">
+              📧 Please Check Your Email needed
+            </h3>
             <p className="text-sm text-gray-700 leading-relaxed">
               We've sent a confirmation scroll to <strong>{form.email}</strong>.
               <br />
-              Check your inbox (and spam folder) for further instructions on the Treasure Hunt.
+              Check your inbox (and spam folder) for further instructions on the
+              Treasure Hunt.
             </p>
           </div>
 
@@ -193,10 +204,11 @@ export default function Page() {
           {/* 💬 Message Display */}
           {message.text && (
             <div
-              className={`mb-4 p-3 rounded-lg text-center ${message.type === "success"
-                ? "bg-green-500/20 border border-green-500/50 text-green-900"
-                : "bg-red-500/20 border border-red-500/50 text-red-900"
-                }`}
+              className={`mb-4 p-3 rounded-lg text-center ${
+                message.type === "success"
+                  ? "bg-green-500/20 border border-green-500/50 text-green-900"
+                  : "bg-red-500/20 border border-red-500/50 text-red-900"
+              }`}
             >
               {message.text}
             </div>
@@ -236,17 +248,20 @@ export default function Page() {
               name="enrollment_number"
               placeholder="Enrollment Number"
               value={form.enrollment_number}
+              minLength={14}
+              maxLength={14}
               onChange={handleChange}
               required
             />
             <input
               className="glass-input"
               name="mobile_number"
+              type="tel"
+              pattern="[0-9]{10}"
+              inputMode="numeric"
               placeholder="Phone Number"
-              value={form.mobile_number}
-              onChange={handleChange}
-              required
             />
+
             <input
               className="glass-input"
               name="department"
