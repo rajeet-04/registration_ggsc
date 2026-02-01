@@ -6,6 +6,8 @@ import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
 import teamsRouter from './routes/teams.js';
 import scoresRouter from './routes/scores.js';
+import qrmazeRouter from './routes/qrmaze.js';
+import verifyRouter from './routes/verify.js';
 
 dotenv.config();
 
@@ -15,6 +17,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from public directory
+app.use(express.static('public'));
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -28,6 +33,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/teams', teamsRouter);
 app.use('/api/scores', scoresRouter);
+app.use('/api/qrmaze', qrmazeRouter);
+app.use('/api/verify-email', verifyRouter);
 
 // 404 handler
 app.use((req, res) => {
