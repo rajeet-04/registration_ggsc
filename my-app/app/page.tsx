@@ -72,7 +72,6 @@ export default function Page() {
             Please check your email for further instructions.
           </p>
 
-          {/* 🟢 NEW: WhatsApp Group Invite for Success Screen */}
           <div className="mb-6 p-4 rounded-xl bg-green-600/20 border border-green-600/30">
             <p className="text-sm text-green-900 font-bold mb-2">📢 Important Step!</p>
             <a
@@ -135,17 +134,16 @@ export default function Page() {
           {/* 📞 Contact Us */}
           <details className="mt-5 rounded-xl border border-amber-950 bg-white/20 backdrop-blur-md">
             <summary className={`${playfair.className} cursor-pointer select-none px-4 py-3 text-lg font-semibold text-amber-950`}>
-              Contact Us
+              Info
             </summary>
             <div className="px-4 pb-4 pt-2 text-gray-800 text-sm space-y-2">
               <p><strong>🎮 Theme:</strong> Temple Run</p>
-              <p><strong>🧩 Activities:</strong> Treasure hunt, games, quizzes, VR Games.</p>
+              <p><strong>🧩 Activities:</strong> Treasure hunt, games, quizzes.</p>
               <p><strong>🏆 Prizes:</strong> Cash prizes for winners</p>
               <p><strong>📅 Date:</strong> 7th February 2026</p>
 
               <hr className="border-white/40 my-2" />
               
-              {/* 🟢 NEW: WhatsApp Link also added inside Contact Us summary */}
               <p className="font-semibold">Official Links:</p>
               <p>
                 🟢 <a href="https://chat.whatsapp.com/GtBFbC7wAF2FK4obNYeIuZ" target="_blank" rel="noopener noreferrer" className="underline font-bold">Join WhatsApp Group</a>
@@ -156,13 +154,26 @@ export default function Page() {
             </div>
           </details>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`${playfair.className} mt-6 w-full py-3 rounded-xl bg-amber-950 text-white text-xl hover:bg-black transition disabled:opacity-50`}
-          >
-            {loading ? "Submitting..." : "Submit"}
-          </button>
+          <div className="flex flex-col gap-3 mt-6">
+            {/* 📥 DOWNLOAD BROCHURE BUTTON */}
+            <a
+              href="https://drive.google.com/file/d/1-4XXEYFYystrlvoJoJp1Z0cvvxU68bUi/view"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${playfair.className} w-full py-3 rounded-xl border-2 border-amber-950 text-amber-950 text-center text-lg font-semibold hover:bg-amber-950/10 transition`}
+            >
+              📥 Download Event Brochure
+            </a>
+
+            {/* 🚀 SUBMIT BUTTON */}
+            <button
+              type="submit"
+              disabled={loading}
+              className={`${playfair.className} w-full py-3 rounded-xl bg-amber-950 text-white text-xl hover:bg-black transition disabled:opacity-50`}
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </button>
+          </div>
         </form>
       )}
 
