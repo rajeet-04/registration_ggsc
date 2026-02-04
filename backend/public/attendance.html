@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +32,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .nav-bar h2 {
@@ -70,14 +71,14 @@
             text-align: center;
             margin-bottom: 30px;
             font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .card {
             background: white;
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
@@ -282,8 +283,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .no-results {
@@ -309,6 +315,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="nav-bar">
@@ -366,7 +373,9 @@
                     <label for="selectAll">Select All</label>
                 </div>
                 <button onclick="bulkMarkPresent()">Mark Selected as Present</button>
-                <button onclick="bulkMarkAbsent()" style="background: linear-gradient(135deg, #f93e3e 0%, #c42c2c 100%);">Mark Selected as Absent</button>
+                <button onclick="bulkMarkAbsent()"
+                    style="background: linear-gradient(135deg, #f93e3e 0%, #c42c2c 100%);">Mark Selected as
+                    Absent</button>
             </div>
 
             <!-- User Table -->
@@ -395,7 +404,7 @@
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:3000';
+        const API_BASE = 'https://registration-ggsc.onrender.com';
         let allUsers = [];
         let filteredUsers = [];
         let currentFilter = 'all';
@@ -439,7 +448,7 @@
 
         function renderUsers() {
             const tbody = document.getElementById('userTableBody');
-            
+
             if (filteredUsers.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="8" class="no-results">No users found</td></tr>';
                 return;
@@ -525,8 +534,8 @@
             await loadUsers();
             await loadStats();
             document.getElementById('selectAll').checked = false;
-            showResponse({ 
-                message: `${successCount} user(s) marked as ${isPresent ? 'present' : 'absent'}` 
+            showResponse({
+                message: `${successCount} user(s) marked as ${isPresent ? 'present' : 'absent'}`
             }, false);
         }
 
@@ -538,7 +547,7 @@
 
         function filterUsers(filter) {
             currentFilter = filter;
-            
+
             // Update active button
             document.querySelectorAll('.filter-button').forEach(btn => {
                 btn.classList.remove('active');
@@ -546,7 +555,7 @@
             event.target.classList.add('active');
 
             // Apply filter
-            switch(filter) {
+            switch (filter) {
                 case 'all':
                     filteredUsers = allUsers;
                     break;
@@ -577,13 +586,13 @@
 
         function applySearch() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
+
             if (searchTerm === '') {
                 renderUsers();
                 return;
             }
 
-            filteredUsers = filteredUsers.filter(user => 
+            filteredUsers = filteredUsers.filter(user =>
                 user.full_name.toLowerCase().includes(searchTerm) ||
                 user.email.toLowerCase().includes(searchTerm) ||
                 user.enrollment_number.toLowerCase().includes(searchTerm) ||
@@ -597,11 +606,12 @@
             const element = document.getElementById('responseMessage');
             element.className = `response ${isError ? 'error' : 'success'}`;
             element.textContent = data.message || data.error || JSON.stringify(data);
-            
+
             setTimeout(() => {
                 element.className = 'response';
             }, 3000);
         }
     </script>
 </body>
+
 </html>
