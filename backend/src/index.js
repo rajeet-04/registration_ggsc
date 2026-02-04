@@ -8,6 +8,7 @@ import teamsRouter from './routes/teams.js';
 import scoresRouter from './routes/scores.js';
 import qrmazeRouter from './routes/qrmaze.js';
 import verifyRouter from './routes/verify.js';
+import gameRouter from './routes/game.js';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use('/api/teams', teamsRouter);
 app.use('/api/scores', scoresRouter);
 app.use('/api/qrmaze', qrmazeRouter);
 app.use('/api/verify-email', verifyRouter);
+app.use('/api/game', gameRouter);
 
 // 404 handler
 app.use((req, res) => {
